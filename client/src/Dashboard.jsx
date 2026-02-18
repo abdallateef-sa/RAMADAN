@@ -6,13 +6,15 @@ const Dashboard = ({ token, logout, theme, toggleTheme }) => {
   const [loading, setLoading] = useState(true);
   const [saving, setSaving] = useState(false);
 
+  const API_URL = import.meta.env.VITE_API_URL || '/api';
+
   useEffect(() => {
     fetchSchedule();
   }, [token]);
 
   const fetchSchedule = async () => {
     try {
-      const res = await axios.get('/api/schedule', {
+      const res = await axios.get(`${API_URL}/schedule`, {
         headers: { 'x-auth-token': token }
       });
       const sorted = res.data.sort((a, b) => a.day - b.day);
@@ -43,7 +45,7 @@ const Dashboard = ({ token, logout, theme, toggleTheme }) => {
 
     try {
       setSaving(true);
-      await axios.post('/api/schedule/update',
+      await axios.post(`${API_URL}/schedule/update`,
         { day, category, item, value },
         { headers: { 'x-auth-token': token } }
       );

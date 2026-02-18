@@ -9,7 +9,7 @@ const Login = ({ setAuth, theme, toggleTheme }) => {
   const [message, setMessage] = useState(null);
   const [rememberMe, setRememberMe] = useState(false);
 
-  const API_URL = '/api';
+  const API_URL = import.meta.env.VITE_API_URL || '/api';
 
   const sendOtp = async (e) => {
     e.preventDefault();
