@@ -11,10 +11,8 @@ app.use(express.json());
 app.use(cors());
 
 // Connect to MongoDB
-mongoose.connect(process.env.MONGO_URI, {
-  useNewUrlParser: true,
-  useUnifiedTopology: true,
-}).then(() => console.log('MongoDB Connected'))
+mongoose.connect(process.env.MONGO_URI)
+  .then(() => console.log('MongoDB Connected'))
   .catch(err => console.error('MongoDB connection error:', err));
 
 // Nodemailer Config
@@ -96,8 +94,10 @@ app.post('/api/verify', async (req, res) => {
         user.otpExpires = undefined;
         await user.save();
 
+
         // Generate Token
-        const token = jwt.sign({ id: user._id }, process.env.JWT_SECRET, { expiresIn: '30d' });
+        const expiresIn = req.body.rememberMe ? '30d' : '24h';
+        const token = jwt.sign({ id: user._id }, process.env.JWT_SECRET, { expiresIn });
         res.json({ token, user: { email: user.email, schedule: user.schedule } });
 
     } catch (err) {
@@ -145,7 +145,33 @@ app.post('/api/schedule/update', auth, async (req, res) => {
     }
 });
 
-// Get User Data (if session persists)
+
+// Get Schedule Data
+app.get('/api/schedule', auth, async (req, res) => {
+    try {
+        const user = await User.findById(req.user.id);
+        if (!user) return res.status(404).json({ msg: 'User not found' });
+        
+        // Ensure schedule exists (backfill if missing)
+        if (!user.schedule || user.schedule.length === 0) {
+            const schedule = [];
+            for (let i = 1; i <= 30; i++) {
+                schedule.push({ 
+                  day: i, 
+                  salah: {}, azkar: {}, quran: {}, goodDeeds: {} 
+                });
+            }
+            user.schedule = schedule;
+            await user.save();
+        }
+
+        res.json(user.schedule);
+    } catch (err) {
+        console.error(err);
+        res.status(500).send('Server Error');
+    }
+});
+
 app.get('/api/user', auth, async (req, res) => {
     try {
         const user = await User.findById(req.user.id).select('-otp -otpExpires');

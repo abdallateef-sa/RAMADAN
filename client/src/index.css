@@ -1,132 +1,259 @@
 :root {
-  --primary-color: #0f172a;
-  --secondary-color: #f59e0b;
+  --primary-color: #3b82f6;
+  --primary-hover: #2563eb;
   --bg-color: #f8fafc;
-  --text-color: #334155;
-  --border-color: #cbd5e1;
+  --card-bg: #ffffff;
+  --text-color: #1e293b;
+  --text-muted: #64748b;
+  --border-color: #e2e8f0;
   --success-color: #10b981;
+  --danger-color: #ef4444;
+  --header-bg-gradient: linear-gradient(135deg, #1e3a8a 0%, #3b82f6 100%);
+  --table-header-bg: #1e40af;
+  --table-stripe: #eff6ff;
+  --shadow-sm: 0 1px 2px 0 rgb(0 0 0 / 0.05);
+  --shadow-md: 0 4px 6px -1px rgb(0 0 0 / 0.1);
+}
+
+[data-theme="dark"] {
+  --primary-color: #60a5fa;
+  --primary-hover: #3b82f6;
+  --bg-color: #0f172a;
+  --card-bg: #1e293b;
+  --text-color: #f1f5f9;
+  --text-muted: #94a3b8;
+  --border-color: #334155;
+  --header-bg-gradient: linear-gradient(135deg, #0f172a 0%, #1e293b 100%);
+  --table-header-bg: #1e3a8a;
+  --table-stripe: #1e293b; 
 }
 
 body {
-  font-family: system-ui, -apple-system, sans-serif;
+  font-family: 'Inter', system-ui, -apple-system, sans-serif;
   margin: 0;
   padding: 0;
   background-color: var(--bg-color);
   color: var(--text-color);
-  direction: rtl; /* Use RTL for Arabic */
+  direction: rtl;
+  transition: background-color 0.3s, color 0.3s;
+}
+
+.app-container {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
 }
 
 .container {
-  max-width: 100%;
+  max-width: 1400px;
   margin: 0 auto;
   padding: 20px;
-  overflow-x: auto;
+  width: 100%;
+  box-sizing: border-box;
 }
 
-h1, h2, h3 {
-  color: var(--primary-color);
-  text-align: center;
+/* Header */
+.app-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 2rem;
+  padding-bottom: 1rem;
+  border-bottom: 1px solid var(--border-color);
 }
 
-button {
+.app-title {
+  color: var(--text-color);
+  font-size: 1.8rem;
+  font-weight: 800;
+  margin: 0;
+  background: linear-gradient(to right, var(--primary-color), #8b5cf6);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+/* Buttons */
+.btn {
   cursor: pointer;
   background-color: var(--primary-color);
   color: white;
   border: none;
-  padding: 10px 20px;
-  border-radius: 5px;
-  font-size: 16px;
-  transition: background-color 0.3s;
+  padding: 0.75rem 1.5rem;
+  border-radius: 0.5rem;
+  font-weight: 600;
+  transition: all 0.2s;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
 }
 
-button:hover {
-  background-color: #1e293b;
+.btn:hover {
+  background-color: var(--primary-hover);
+  transform: translateY(-1px);
 }
 
-input[type="email"], input[type="text"] {
-  padding: 10px;
+.btn-danger {
+  background-color: var(--danger-color);
+}
+.btn-danger:hover { background-color: #dc2626; }
+
+.btn-icon {
+  padding: 0.5rem;
+  background: transparent;
+  color: var(--text-color);
   border: 1px solid var(--border-color);
-  border-radius: 5px;
+}
+.btn-icon:hover {
+  background-color: var(--card-bg);
+  border-color: var(--primary-color);
+}
+
+/* Login Card */
+.login-wrapper {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 100vh;
+  background: var(--bg-color);
+}
+
+.login-card {
   width: 100%;
-  box-sizing: border-box;
-  font-size: 16px;
-  margin-bottom: 10px;
-}
-
-/* Table Styles to mimic image */
-.schedule-table {
-  width: 100%;
-  min-width: 1000px; /* Ensure table doesn't get squashed */
-  border-collapse: collapse;
-  margin-top: 20px;
-  background: white;
-  border-radius: 8px;
-  overflow: hidden;
-  box-shadow: 0 4px 6px -1px rgb(0 0 0 / 0.1);
-  font-size: 14px;
-}
-
-.schedule-table th, .schedule-table td {
-  border: 1px solid var(--border-color);
-  padding: 6px; /* Reduced padding for compact view */
-  text-align: center;
-}
-
-.main-header {
-  background-color: #1e3a8a; /* Deep Blue based on image */
-  color: white;
-  font-size: 1.2rem;
-  font-weight: bold;
-}
-
-.sub-header {
-  background-color: #1e40af; /* Slightly lighter blue */
-  color: white;
-  font-weight: bold;
-}
-
-.day-cell {
-  background-color: #eff6ff;
-  font-weight: bold;
-  white-space: nowrap;
-}
-
-input[type="checkbox"] {
-  width: 20px;
-  height: 20px;
-  cursor: pointer;
-  accent-color: var(--success-color);
-}
-
-/* Login Styles */
-.login-container {
   max-width: 400px;
-  margin: 100px auto;
-  padding: 30px;
-  background: white;
-  border-radius: 8px;
-  box-shadow: 0 4px 6px -1px rgb(0 0 0 / 0.1);
-  text-align: center;
+  padding: 2.5rem;
+  background: var(--card-bg);
+  border-radius: 1rem;
+  box-shadow: var(--shadow-md);
+  border: 1px solid var(--border-color);
 }
 
 .form-group {
-  margin-bottom: 20px;
-  text-align: right;
+  margin-bottom: 1.5rem;
 }
 
-.message {
-  padding: 10px;
-  margin-bottom: 10px;
-  border-radius: 5px;
+.form-label {
+  display: block;
+  margin-bottom: 0.5rem;
+  color: var(--text-color);
+  font-weight: 500;
 }
-.error { background-color: #fee2e2; color: #b91c1c; }
-.success { background-color: #dcfce7; color: #166534; }
 
-.header-banner {
-  background-color: var(--primary-color);
+.form-input {
+  width: 100%;
+  padding: 0.75rem;
+  border: 1px solid var(--border-color);
+  background: var(--bg-color);
+  color: var(--text-color);
+  border-radius: 0.5rem;
+  box-sizing: border-box;
+  font-size: 1rem;
+  transition: border-color 0.2s;
+}
+
+.form-input:focus {
+  outline: none;
+  border-color: var(--primary-color);
+  box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1);
+}
+
+/* Toggle Switch */
+.theme-toggle {
+  background: none;
+  border: none;
+  cursor: pointer;
+  font-size: 1.5rem;
+  color: var(--text-color);
+  padding: 5px;
+  border-radius: 50%;
+  transition: background-color 0.3s;
+}
+.theme-toggle:hover {
+  background-color: rgba(0,0,0,0.1);
+}
+[data-theme="dark"] .theme-toggle:hover {
+  background-color: rgba(255,255,255,0.1);
+}
+
+/* Scrollable Table Container */
+.table-container {
+  overflow-x: auto;
+  background: var(--card-bg);
+  border-radius: 0.75rem;
+  box-shadow: var(--shadow-md);
+  border: 1px solid var(--border-color);
+}
+
+.schedule-table {
+  width: 100%;
+  border-collapse: collapse;
+  white-space: nowrap;
+}
+
+.schedule-table th {
+  padding: 12px;
   color: white;
-  padding: 20px;
-  text-align: center;
-  margin-bottom: 20px;
-  border-radius: 0 0 8px 8px;
+  font-weight: 600;
+  border: 1px solid rgba(255,255,255,0.1);
 }
+
+.schedule-table td {
+  padding: 10px;
+  border: 1px solid var(--border-color);
+  text-align: center;
+  color: var(--text-color);
+  transition: background-color 0.2s;
+}
+
+.schedule-table tr:hover td {
+  background-color: rgba(59, 130, 246, 0.05);
+}
+
+/* Custom Checkbox */
+input[type="checkbox"] {
+  appearance: none;
+  background-color: var(--bg-color);
+  margin: 0;
+  font: inherit;
+  color: currentColor;
+  width: 1.25em;
+  height: 1.25em;
+  border: 2px solid var(--text-muted);
+  border-radius: 0.25em;
+  display: grid;
+  place-content: center;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+input[type="checkbox"]::before {
+  content: "";
+  width: 0.65em;
+  height: 0.65em;
+  transform: scale(0);
+  transition: 120ms transform ease-in-out;
+  box-shadow: inset 1em 1em white;
+  transform-origin: center;
+  clip-path: polygon(14% 44%, 0 65%, 50% 100%, 100% 16%, 80% 0%, 43% 62%);
+}
+
+input[type="checkbox"]:checked {
+  background-color: var(--success-color);
+  border-color: var(--success-color);
+}
+
+input[type="checkbox"]:checked::before {
+  transform: scale(1);
+}
+
+/* Specific Header Colors - Kept from original but modernized */
+.th-day { background-color: #1e3a8a; } /* Dark Blue */
+.th-salah { background-color: #1d4ed8; } /* Blue */
+.th-azkar { background-color: #15803d; } /* Green */
+.th-quran { background-color: #ea580c; } /* Orange */
+.th-deeds { background-color: #7e22ce; } /* Purple */
+
+[data-theme="dark"] .th-day { background-color: #0f172a; }
+[data-theme="dark"] .th-salah { background-color: #1e40af; }
+[data-theme="dark"] .th-azkar { background-color: #166534; }
+[data-theme="dark"] .th-quran { background-color: #c2410c; }
+[data-theme="dark"] .th-deeds { background-color: #6b21a8; }
