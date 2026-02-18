@@ -12,7 +12,7 @@ const Dashboard = ({ token, logout, theme, toggleTheme }) => {
 
   const fetchSchedule = async () => {
     try {
-      const res = await axios.get('http://localhost:5000/api/schedule', {
+      const res = await axios.get('/api/schedule', {
         headers: { 'x-auth-token': token }
       });
       const sorted = res.data.sort((a, b) => a.day - b.day);
@@ -43,7 +43,7 @@ const Dashboard = ({ token, logout, theme, toggleTheme }) => {
 
     try {
       setSaving(true);
-      await axios.post('http://localhost:5000/api/schedule/update',
+      await axios.post('/api/schedule/update',
         { day, category, item, value },
         { headers: { 'x-auth-token': token } }
       );

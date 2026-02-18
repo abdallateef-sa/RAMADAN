@@ -9,7 +9,7 @@ const Login = ({ setAuth, theme, toggleTheme }) => {
   const [message, setMessage] = useState(null);
   const [rememberMe, setRememberMe] = useState(false);
 
-  const API_URL = 'http://localhost:5000/api';
+  const API_URL = '/api';
 
   const sendOtp = async (e) => {
     e.preventDefault();
