@@ -10,12 +10,9 @@ const app = express();
 app.use(express.json());
 
 
-// Configure CORS to allow specific origin or all (during dev)
 app.use(cors({
-    origin: ['https://ramadan.me-ar.me', 'http://localhost:5173', 'http://localhost:4173'], // Allow production domain and local dev ports
-    methods: ['GET', 'POST', 'PUT', 'DELETE'],
-    allowedHeaders: ['Content-Type', 'x-auth-token'],
-    credentials: true
+  origin: "*",
+  credentials: true
 }));
 
 
