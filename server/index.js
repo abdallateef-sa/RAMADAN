@@ -60,8 +60,6 @@ app.post('/api/login', async (req, res) => {
       user.otpExpires = otpExpires;
     }
     
-    await user.save();
-
     // Send Email
     const mailOptions = {
         from: process.env.EMAIL_USER,
@@ -70,12 +68,20 @@ app.post('/api/login', async (req, res) => {
         text: `Your login code is: ${otp}`
     };
 
-    transporter.sendMail(mailOptions, (error, info) => {
+    transporter.sendMail(mailOptions, async (error, info) => {
         if (error) {
             console.error('Error sending email:', error);
-            return res.status(500).json({ msg: 'Error sending email' });
+            return res.status(500).json({ msg: 'Error sending email. Please check the email address.' });
         }
-        res.json({ msg: 'OTP sent to email' });
+        
+        // Save user only after successful email transmission
+        try {
+            await user.save();
+            res.json({ msg: 'OTP sent to email' });
+        } catch (saveError) {
+             console.error('Error saving user:', saveError);
+             return res.status(500).json({ msg: 'Database error' });
+        }
     });
 
   } catch (err) {
